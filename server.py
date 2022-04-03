@@ -7,9 +7,16 @@ CHUNK = 1024
 host=None
 port=None
 server = None
+callback = None
 
-# Add ovserver
-def broadcast(msg):
+def register_cb(cb):
+    global callback 
+    callback = cb
+
+def notify(msg):
+    if callback:
+        callback(msg)
+        return
     print(f"{msg}\n")
 
 def run(host, port, max_conn = 1):
@@ -23,7 +30,7 @@ def run(host, port, max_conn = 1):
         conn, addr = server.accept()
         print(f'client with ip {addr} connected')
         msg = conn.recv(CHUNK).decode('utf-8')
-        broadcast(msg)
+        notify(msg)
 
 if __name__ == "__main__":
     if len(sys.argv) == 3:
@@ -35,5 +42,8 @@ if __name__ == "__main__":
     else:
         print("Error runing server\nUsage: python server.py <host> <port>")
         exit(1)
+    def print_cb(msg):
+        print(msg)
+    register_cb(print_cb)
     run(host, port)
 
