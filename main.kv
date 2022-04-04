@@ -1,0 +1,76 @@
+#: import sys sys
+
+MainScreen:
+    MenuScreen:
+    ChatScreen:
+
+<MenuScreen>:
+    name: "menu"
+
+    GridLayout:
+        cols: 2
+        rows: 4
+
+        Label:
+            text: "IP Address:"
+
+        TextInput:
+            id: ip
+            text:""
+            multiline: False
+
+        Label:
+            text: "Porta: "
+
+        TextInput:
+            id: port
+            text: ""
+            multiline: False
+
+        Button:
+            text: "Connect"
+            on_press: 
+                root.setup_acc()
+                root.manager.current = "chat"
+
+        Button:
+            text: "Exit"
+            on_press: sys.exit()
+
+
+<ChatScreen>:
+    name: "chat"
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: 0,0,0,0
+        
+        MDFloatLayout:
+            md_bg_color: 0,0,0,0
+            size_hint_y: 0.9
+
+            MDIconButton:
+                pos_hint: {"x": 0, "y": 0.9}
+                icon: "chevron-left-circle-outline"
+                on_release: root.manager.current = 'menu'
+
+            MDIconButton:
+                icon: "network-off-outline"
+                pos_hint: {"x": 0.3, "y": 0.5}
+
+
+
+        MDBoxLayout:
+            md_bg_color: 0, 0, 1, 1
+            size_hint_y: 0.1
+
+            TextInput:
+                id: msg
+                text: "" 
+            
+            MDIconButton:
+                icon: 'send' 
+                on_release: app.root.get_screen('menu').send_msg(msg)
+
+
+<HistoryScreen>:

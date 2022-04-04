@@ -1,5 +1,7 @@
 import socket
 from sys import argv
+from threading import Thread
+from time import sleep
 
 class Client:
     client = None
@@ -7,10 +9,10 @@ class Client:
     port = None
     active = False
 
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        Client.connect(self, host, port)
+    def __init__(self):
+        self.host = None
+        self.port = None
+        #Client.connect(self, host, port)
 
     def connect(self, host=None, port=None):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -34,11 +36,18 @@ class Client:
 
 if __name__ == "__main__":
     try:
-        host, port = str(argv[1]), int(argv[2])
-        newClient = Client(host, port)
-        newClient.send("Client message to the server")
+        newClient = Client()
+        newClient.connect("localhost", 8000)
+        newClient.send("Client message to the server1\n")
+        print("-messag1 sent")
+        sleep(2)
+        newClient.send("Client message to the server2\n")
+        print("-messag2 sent")
+        sleep(2)
+        newClient.send("Client message to the server3\n")
+        print("-messag3 sent")
+        sleep(1)
         newClient.close()
-    except TypeError:
-        print("Usage: python client.py <host> <port>")
+        print("done!")
     except:
         print("Failed connecting to server")

@@ -1,0 +1,44 @@
+#: import sys sys
+#: import Clock kivy.clock.Clock
+
+MainScreen:
+    LoginScreen:
+    ListenScreen:
+
+<LoginScreen>:
+    name: "login_server"
+    GridLayout:
+        cols: 2
+        rows: 4
+
+        Label:
+            text: "IP Address:"
+
+        TextInput:
+            id: ip
+            text:""
+            multiline: False
+
+        Label:
+            text: "Porta: "
+
+        TextInput:
+            id: port
+            text: ""
+            multiline: False
+
+        Button:
+            text: "Listen"
+            on_release: 
+                root.server_listen()
+                root.manager.current = "listen"
+
+        Button:
+            text: "Exit"
+            on_press: sys.exit()
+
+<ListenScreen>:
+    name: "listen"
+
+    # on_enter: Clock.schedule_interval(root.update_msg, 1/60)
+
