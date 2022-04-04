@@ -23,6 +23,11 @@ class Server:
         self._t_message = None
         self._running = False
 
+    def config(self, host, port):
+        self.host = host
+        self.port = port
+        return self
+
     def _accept(self):
         while True:
             conn, addr = self._server.accept()

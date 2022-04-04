@@ -7,8 +7,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivy.uix.label import Label
 from threading import Thread
 
-def notify(msg):
-    pass
+server_socket = server.Server()
 
 class ListenScreen(MDScreen):
     chat = None
@@ -30,9 +29,7 @@ class ListenScreen(MDScreen):
         def on_messsage(msg):
             self.chat_history.text += "\n" + msg
 
-        #This line
-        #This line
-        server_socket.register_cb(on_messsage)
+        MainScreen.register_cb(on_messsage)
 
 
 
@@ -50,12 +47,14 @@ class LoginScreen(MDScreen):
         self.ip = self.ids.ip.text
         self.port = int(self.ids.port.text)
 
-        server_socket = server.init(self.ip, self.port)
-        server_socket.start()
-        Thread(target=server.run).start()
+        server_socket.config(self.ip, self.port).start()
         
 class MainScreen(ScreenManager):
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    @staticmethod
+    def register_cb(cb):
+        server_socket.register_cb(cb)
 
 
 class ServerKv(MDApp):
